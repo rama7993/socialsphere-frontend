@@ -28,6 +28,8 @@ export interface Comment {
   author: User;
   postId: string;
   createdAt: string;
+  likes: User[];
+  replies?: Comment[];
 }
 
 export interface Like {
