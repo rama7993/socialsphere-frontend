@@ -1,73 +1,53 @@
-# React + TypeScript + Vite
+# SocialSphere - Frontend 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SocialSphere is a modern social media platform built for high performance and visual excellence. This repository contains the React-based frontend application.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Interactive Feed**: Real-time likes and comment synchronization.
+- **Advanced Stories**: 
+  - 30-day persistence.
+  - Smart sorting (Own stories first, then Unseen, then Seen).
+  - Visual status indicators (Gradient ring for new, Gray for seen).
+- **Social Management**: Follow/Unfollow users, discover new people, and manage profile settings.
+- **Responsive Design**: Polished UI with smooth animations and auto-expanding text areas.
+- **Premium UX**: Integrated shimmers, toast notifications, and consistent cursor feedback.
 
-## React Compiler
+## 🛠 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Core**: React 18 + TypeScript + Vite
+- **Styling**: Tailwind CSS + SCSS (Premium visual baseline)
+- **Icons**: Lucide React
+- **State Management**: Zustand + TanStack Query (React Query)
+- **Networking**: Axios (with centralized interceptors for Auth)
+- **Notifications**: Sonner
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2. **Environment Setup**:
+   Create a `.env` file in the root directory:
+   ```env
+   VITE_API_URL=http://localhost:3000
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+3. **Run Development Server**:
+   ```bash
+   npm run dev
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🏗 Build & Deploy
+
+To create a production build:
+```bash
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The output will be in the `dist/` directory.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📝 Characteristics
+- **StrictMode Enabled**: Note that API calls may double-trigger in development mode due to `React.StrictMode` (a safety feature to detect side effects). This is disabled in production.
