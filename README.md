@@ -6,12 +6,15 @@ SocialSphere is a modern social media platform built for high performance and vi
 
 - **Interactive Feed**: Real-time likes and comment synchronization.
 - **Advanced Stories**: 
-  - 30-day persistence.
   - Smart sorting (Own stories first, then Unseen, then Seen).
   - Visual status indicators (Gradient ring for new, Gray for seen).
 - **Social Management**: Follow/Unfollow users, discover new people, and manage profile settings.
+- **Premium UI/UX**: 
+  - **Custom Modals**: Replaced native alerts with a sleek `ConfirmationModal` system.
+  - **Dynamic Toasts**: Premium feedback for actions like link copying and permission alerts.
+  - **Grouped Actions**: Combined "Like" and "Delete" actions in comments for a cleaner interface.
+  - **Polished Shimmers**: Enhanced loading states for a premium app feel.
 - **Responsive Design**: Polished UI with smooth animations and auto-expanding text areas.
-- **Premium UX**: Integrated shimmers, toast notifications, and consistent cursor feedback.
 
 ## 🛠 Tech Stack
 
