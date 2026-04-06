@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Mail, Lock, AlertCircle } from "lucide-react";
+import { Mail, Lock, AlertCircle, Eye, EyeOff } from "lucide-react";
 import api from "../../lib/axios";
 import { useAuthStore } from "../../store/authStore";
 
@@ -9,6 +9,7 @@ export function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuthStore();
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -122,9 +123,9 @@ export function LoginPage() {
                 </div>
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
-                  className={`focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md p-2 border ${
+                  className={`focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 pr-10 sm:text-sm border-gray-300 rounded-md p-2 border ${
                     errors.password ? "border-red-300" : ""
                   }`}
                   placeholder="••••••••"
@@ -132,6 +133,17 @@ export function LoginPage() {
                     required: "Password is required",
                   })}
                 />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
               </div>
               {errors.password && (
                 <p className="mt-2 text-sm text-red-600">

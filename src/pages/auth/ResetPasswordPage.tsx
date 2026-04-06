@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Lock, AlertCircle, CheckCircle } from "lucide-react";
+import { Lock, AlertCircle, CheckCircle, Eye, EyeOff } from "lucide-react";
 import api from "../../lib/axios";
 
 export function ResetPasswordPage() {
@@ -10,6 +10,8 @@ export function ResetPasswordPage() {
   const navigate = useNavigate();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [showPass, setShowPass] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const {
     register,
     handleSubmit,
@@ -118,8 +120,8 @@ export function ResetPasswordPage() {
                 </div>
                 <input
                   id="newPass"
-                  type="password"
-                  className={`focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md p-2 border ${
+                  type={showPass ? "text" : "password"}
+                  className={`focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 pr-10 sm:text-sm border-gray-300 rounded-md p-2 border ${
                     errors.newPass ? "border-red-300" : ""
                   }`}
                   placeholder="••••••••"
@@ -131,6 +133,17 @@ export function ResetPasswordPage() {
                     },
                   })}
                 />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+                  onClick={() => setShowPass(!showPass)}
+                >
+                  {showPass ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
               </div>
               {errors.newPass && (
                 <p className="mt-2 text-sm text-red-600">
@@ -152,8 +165,8 @@ export function ResetPasswordPage() {
                 </div>
                 <input
                   id="confirmPass"
-                  type="password"
-                  className={`focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md p-2 border ${
+                  type={showConfirm ? "text" : "password"}
+                  className={`focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 pr-10 sm:text-sm border-gray-300 rounded-md p-2 border ${
                     errors.confirmPass ? "border-red-300" : ""
                   }`}
                   placeholder="••••••••"
@@ -163,6 +176,17 @@ export function ResetPasswordPage() {
                       value === password || "Passwords do not match",
                   })}
                 />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                >
+                  {showConfirm ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
               </div>
               {errors.confirmPass && (
                 <p className="mt-2 text-sm text-red-600">
