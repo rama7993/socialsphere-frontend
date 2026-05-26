@@ -4,7 +4,10 @@ import { useAuthStore } from "../store/authStore";
 import type { User } from "../types";
 import { useIsOwnProfile } from "./useIsOwnProfile";
 
-export function useFollow(targetUser: User | null, onToggle?: (isFollowing: boolean) => void) {
+export function useFollow(
+  targetUser: User | null,
+  onToggle?: (isFollowing: boolean) => void,
+) {
   const { user: currentUser } = useAuthStore();
   const [isFollowing, setIsFollowing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -16,8 +19,12 @@ export function useFollow(targetUser: User | null, onToggle?: (isFollowing: bool
 
     const checkFollowing = async () => {
       try {
-        const { data: followers } = await api.get(`/users/${targetUser.id}/followers`);
-        setIsFollowing(followers.some((f: User) => String(f.id) === String(currentUser.id)));
+        const { data: followers } = await api.get(
+          `/users/${targetUser.id}/followers`,
+        );
+        setIsFollowing(
+          followers.some((f: User) => String(f.id) === String(currentUser.id)),
+        );
       } catch (error) {
         console.error("Failed to check follow status", error);
       }

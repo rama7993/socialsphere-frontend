@@ -47,7 +47,7 @@ export function RegisterPage() {
     } catch (err: any) {
       console.error("Registration failed", err);
       setError(
-        err.response?.data?.message || "Registration failed. Please try again."
+        err.response?.data?.message || "Registration failed. Please try again.",
       );
     }
   };
@@ -137,7 +137,11 @@ export function RegisterPage() {
                   </div>
                   <input
                     id={field.name}
-                    type={field.name === "password" && showPassword ? "text" : field.type}
+                    type={
+                      field.name === "password" && showPassword
+                        ? "text"
+                        : field.type
+                    }
                     className={`focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 pr-10 sm:text-sm border-gray-300 rounded-md p-2 border ${
                       errors[field.name] ? "border-red-300" : ""
                     }`}

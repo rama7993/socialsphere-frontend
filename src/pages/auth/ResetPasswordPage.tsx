@@ -51,7 +51,7 @@ export function ResetPasswordPage() {
       console.error("Reset password failed", err);
       setError(
         err.response?.data?.message ||
-          "Failed to reset password. Token may be invalid or expired."
+          "Failed to reset password. Token may be invalid or expired.",
       );
     }
   };

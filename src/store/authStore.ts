@@ -31,7 +31,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (!token) return;
 
     try {
-      const response = await api.get("/users/profile"); 
+      const response = await api.get("/users/profile");
       set({ user: response.data, isAuthenticated: true });
     } catch (error) {
       localStorage.removeItem("token");

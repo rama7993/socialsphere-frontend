@@ -20,11 +20,11 @@ export function HomePage() {
       const response = await api.get(endpoint, {
         params: { page: pageNum, limit: 10 },
       });
-      
+
       const data = response.data;
-      const newPosts = Array.isArray(data) ? data : (data.posts || []);
+      const newPosts = Array.isArray(data) ? data : data.posts || [];
       const fCount = data.followingCount ?? 0;
-      
+
       setFollowingCount(fCount);
 
       if (pageNum === 1) {
@@ -32,7 +32,7 @@ export function HomePage() {
       } else {
         setPosts((prev) => [...prev, ...newPosts]);
       }
-      
+
       setHasMore(newPosts.length === 10);
     } catch (error) {
       console.error("Failed to fetch posts", error);
@@ -59,7 +59,10 @@ export function HomePage() {
       {loading ? (
         <div className="space-y-4">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm space-y-4">
+            <div
+              key={i}
+              className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm space-y-4"
+            >
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-full shimmer" />
                 <div className="space-y-2">
@@ -83,8 +86,12 @@ export function HomePage() {
                 <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl">👋</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Welcome to SocialSphere</h3>
-                <p className="text-gray-500 mb-6 max-w-xs mx-auto text-[15px]">Follow people to see their latest posts in your feed.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Welcome to SocialSphere
+                </h3>
+                <p className="text-gray-500 mb-6 max-w-xs mx-auto text-[15px]">
+                  Follow people to see their latest posts in your feed.
+                </p>
                 <Link
                   to="/search"
                   className="inline-flex px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition-all active:scale-95 shadow-sm shadow-indigo-100"
@@ -97,8 +104,12 @@ export function HomePage() {
                 <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl">📭</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">No posts yet</h3>
-                <p className="text-gray-500 max-w-xs mx-auto text-[15px]">The people you follow haven't posted anything yet.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  No posts yet
+                </h3>
+                <p className="text-gray-500 max-w-xs mx-auto text-[15px]">
+                  The people you follow haven't posted anything yet.
+                </p>
               </div>
             )
           ) : (

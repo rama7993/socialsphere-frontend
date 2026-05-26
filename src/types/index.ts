@@ -57,7 +57,8 @@ export const NotificationType = {
   FOLLOW: "follow",
 } as const;
 
-export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
+export type NotificationType =
+  (typeof NotificationType)[keyof typeof NotificationType];
 
 export interface Notification {
   id: string;

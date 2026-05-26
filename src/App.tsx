@@ -1,4 +1,8 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  type RouteObject,
+} from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
 import { HomePage } from "./pages/home/HomePage";
 import { LoginPage } from "./pages/auth/LoginPage";
@@ -15,6 +19,61 @@ import { ResetPasswordPage } from "./pages/auth/ResetPasswordPage";
 import { useEffect } from "react";
 import { useAuthStore } from "./store/authStore";
 
+const routes: RouteObject[] = [
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPasswordPage />,
+  },
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        element: <Layout />,
+        children: [
+          {
+            path: "/",
+            element: <HomePage />,
+          },
+          {
+            path: "/profile",
+            element: <ProfilePage />,
+          },
+          {
+            path: "/profile/:id",
+            element: <ProfilePage />,
+          },
+          {
+            path: "/search",
+            element: <SearchPage />,
+          },
+          {
+            path: "/notifications",
+            element: <NotificationsPage />,
+          },
+          {
+            path: "/create",
+            element: <CreatePostPage />,
+          },
+        ],
+      },
+    ],
+  },
+];
+
+const router = createBrowserRouter(routes);
+
 function App() {
   const { checkAuth } = useAuthStore();
 
@@ -22,27 +81,7 @@ function App() {
     checkAuth();
   }, []);
 
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-
-        <Route element={<ProtectedRoute />}>
-          <Route element={<Layout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/profile/:id" element={<ProfilePage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/notifications" element={<NotificationsPage />} />
-            <Route path="/create" element={<CreatePostPage />} />
-          </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

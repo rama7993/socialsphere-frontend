@@ -13,11 +13,15 @@ interface ProfileHeaderProps {
 export function ProfileHeader({ user: initialUser }: ProfileHeaderProps) {
   const [user, setUser] = useState(initialUser);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [listModal, setListModal] = useState<{ isOpen: boolean; type: "followers" | "following" }>({
+  const [listModal, setListModal] = useState<{
+    isOpen: boolean;
+    type: "followers" | "following";
+  }>({
     isOpen: false,
     type: "followers",
   });
-  const { isFollowing, toggleFollow, isLoading, isOwnProfile } = useFollow(user);
+  const { isFollowing, toggleFollow, isLoading, isOwnProfile } =
+    useFollow(user);
 
   useEffect(() => {
     setUser(initialUser);
@@ -26,23 +30,39 @@ export function ProfileHeader({ user: initialUser }: ProfileHeaderProps) {
   const handleFollowToggle = async () => {
     await toggleFollow();
     if (!isFollowing) {
-      setUser(prev => ({ ...prev, followersCount: (prev.followersCount || 0) + 1 }));
+      setUser((prev) => ({
+        ...prev,
+        followersCount: (prev.followersCount || 0) + 1,
+      }));
     } else {
-      setUser(prev => ({ ...prev, followersCount: Math.max(0, (prev.followersCount || 0) - 1) }));
+      setUser((prev) => ({
+        ...prev,
+        followersCount: Math.max(0, (prev.followersCount || 0) - 1),
+      }));
     }
   };
 
-  const handleCountChange = (type: "followers" | "following", delta: number) => {
-    setUser(prev => ({
+  const handleCountChange = (
+    type: "followers" | "following",
+    delta: number,
+  ) => {
+    setUser((prev) => ({
       ...prev,
-      followersCount: type === "followers" ? Math.max(0, (prev.followersCount || 0) + delta) : prev.followersCount,
-      followingCount: type === "following" ? Math.max(0, (prev.followingCount || 0) + delta) : prev.followingCount,
+      followersCount:
+        type === "followers"
+          ? Math.max(0, (prev.followersCount || 0) + delta)
+          : prev.followersCount,
+      followingCount:
+        type === "following"
+          ? Math.max(0, (prev.followingCount || 0) + delta)
+          : prev.followingCount,
     }));
   };
 
-  const displayName = user.firstName || user.lastName
-    ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
-    : user.username;
+  const displayName =
+    user.firstName || user.lastName
+      ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
+      : user.username;
 
   return (
     <div className="mb-8">
@@ -72,9 +92,24 @@ export function ProfileHeader({ user: initialUser }: ProfileHeaderProps) {
                 )}
                 {isOwnProfile && (
                   <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-full">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
                     </svg>
                   </div>
                 )}
@@ -87,7 +122,9 @@ export function ProfileHeader({ user: initialUser }: ProfileHeaderProps) {
         <div className="flex-1 min-w-0 py-1">
           {/* Username + Actions row */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <h1 className="text-xl font-semibold text-gray-900 tracking-tight">{user.username}</h1>
+            <h1 className="text-xl font-semibold text-gray-900 tracking-tight">
+              {user.username}
+            </h1>
             {isOwnProfile ? (
               <button
                 onClick={() => setIsEditOpen(true)}
@@ -103,12 +140,16 @@ export function ProfileHeader({ user: initialUser }: ProfileHeaderProps) {
                   "px-6 py-1.5 rounded-lg font-semibold text-sm transition-all focus:outline-none active:scale-95",
                   isFollowing
                     ? "bg-gray-100 text-gray-900 hover:bg-gray-200"
-                    : "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200"
+                    : "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200",
                 )}
               >
                 {isLoading ? (
                   <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mx-auto" />
-                ) : isFollowing ? "Following" : "Follow"}
+                ) : isFollowing ? (
+                  "Following"
+                ) : (
+                  "Follow"
+                )}
               </button>
             )}
           </div>
@@ -139,7 +180,9 @@ export function ProfileHeader({ user: initialUser }: ProfileHeaderProps) {
           <div className="space-y-1">
             <p className="font-semibold text-sm text-gray-900">{displayName}</p>
             {user.bio && (
-              <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap max-w-sm">{user.bio}</p>
+              <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap max-w-sm">
+                {user.bio}
+              </p>
             )}
             {user.location && (
               <div className="flex items-center gap-1 text-sm text-gray-500">
@@ -149,7 +192,11 @@ export function ProfileHeader({ user: initialUser }: ProfileHeaderProps) {
             )}
             {user.website && (
               <a
-                href={user.website.startsWith("http") ? user.website : `https://${user.website}`}
+                href={
+                  user.website.startsWith("http")
+                    ? user.website
+                    : `https://${user.website}`
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-sm text-indigo-600 font-medium hover:text-indigo-800 transition-colors w-fit"

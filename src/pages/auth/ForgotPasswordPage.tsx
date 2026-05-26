@@ -22,7 +22,8 @@ export function ForgotPasswordPage() {
     } catch (err: any) {
       console.error("Forgot password failed", err);
       setError(
-        err.response?.data?.message || "Something went wrong. Please try again."
+        err.response?.data?.message ||
+          "Something went wrong. Please try again.",
       );
     }
   };

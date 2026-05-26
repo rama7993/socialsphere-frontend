@@ -40,7 +40,7 @@ export function CreatePost({ onPostCreated }: CreatePostProps) {
 
     try {
       setIsGeneratingAI(true);
-      
+
       // Convert file to base64
       const reader = new FileReader();
       const base64Promise = new Promise<string>((resolve) => {
@@ -50,12 +50,12 @@ export function CreatePost({ onPostCreated }: CreatePostProps) {
       const imageBase64 = await base64Promise;
 
       const response = await api.post("/ai/caption", { imageBase64 });
-      
+
       if (response.data.suggestion) {
         setContent(response.data.suggestion);
         // Trigger auto-expand
         if (textareaRef.current) {
-          textareaRef.current.style.height = 'auto';
+          textareaRef.current.style.height = "auto";
           textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
         }
         toast.success("AI suggested a caption!");
@@ -74,7 +74,7 @@ export function CreatePost({ onPostCreated }: CreatePostProps) {
 
     try {
       setIsSubmitting(true);
-      
+
       // OPTIONAL: Moderation check before posting
       // const modCheck = await api.post("/ai/moderate", { content });
       // if (modCheck.data.status.includes("FLAGGED")) {
@@ -102,7 +102,7 @@ export function CreatePost({ onPostCreated }: CreatePostProps) {
 
       setContent("");
       if (textareaRef.current) {
-        textareaRef.current.style.height = '100px';
+        textareaRef.current.style.height = "100px";
       }
       clearFile();
       onPostCreated?.();
@@ -126,7 +126,7 @@ export function CreatePost({ onPostCreated }: CreatePostProps) {
           onChange={(e) => {
             setContent(e.target.value);
             // Auto-expand logic
-            e.target.style.height = 'auto';
+            e.target.style.height = "auto";
             const newHeight = Math.min(e.target.scrollHeight, 240); // ~6 lines
             e.target.style.height = `${newHeight}px`;
           }}
@@ -166,15 +166,15 @@ export function CreatePost({ onPostCreated }: CreatePostProps) {
             >
               <Image size={20} />
             </button>
-            
+
             <button
               type="button"
               title="AI Suggest Caption"
               disabled={!selectedFile || isGeneratingAI}
               onClick={handleAISuggest}
               className={`p-2.5 rounded-xl transition-all active:scale-95 focus:outline-none ${
-                selectedFile 
-                  ? "text-amber-500 hover:bg-amber-50" 
+                selectedFile
+                  ? "text-amber-500 hover:bg-amber-50"
                   : "text-gray-300 cursor-not-allowed"
               }`}
             >
@@ -188,7 +188,11 @@ export function CreatePost({ onPostCreated }: CreatePostProps) {
 
           <button
             type="submit"
-            disabled={(!content.trim() && !selectedFile) || isSubmitting || isGeneratingAI}
+            disabled={
+              (!content.trim() && !selectedFile) ||
+              isSubmitting ||
+              isGeneratingAI
+            }
             className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95 shadow-sm shadow-indigo-100 focus:outline-none text-[13px]"
           >
             {isSubmitting ? "Posting..." : "Post"}

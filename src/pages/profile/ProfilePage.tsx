@@ -147,7 +147,9 @@ export function ProfilePage() {
               size={12}
               className={cn(
                 "transition-all duration-500",
-                activeTab === id ? "text-gray-900 scale-110" : "group-hover:scale-110 group-hover:text-gray-400",
+                activeTab === id
+                  ? "text-gray-900 scale-110"
+                  : "group-hover:scale-110 group-hover:text-gray-400",
               )}
               strokeWidth={activeTab === id ? 3 : 2.5}
             />

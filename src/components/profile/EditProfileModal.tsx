@@ -12,7 +12,12 @@ interface EditProfileModalProps {
 
 type AvatarMode = "url" | "file";
 
-export function EditProfileModal({ user, isOpen, onClose, onUpdate }: EditProfileModalProps) {
+export function EditProfileModal({
+  user,
+  isOpen,
+  onClose,
+  onUpdate,
+}: EditProfileModalProps) {
   const [formData, setFormData] = useState({
     firstName: user.firstName || "",
     lastName: user.lastName || "",
@@ -45,7 +50,7 @@ export function EditProfileModal({ user, isOpen, onClose, onUpdate }: EditProfil
       const { data } = await api.post("/upload", fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setFormData(prev => ({ ...prev, avatarUrl: data.url }));
+      setFormData((prev) => ({ ...prev, avatarUrl: data.url }));
       setPreviewUrl(data.url);
     } catch {
       setPreviewUrl(formData.avatarUrl);
@@ -76,10 +81,15 @@ export function EditProfileModal({ user, isOpen, onClose, onUpdate }: EditProfil
       <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-700 transition-colors p-1">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-700 transition-colors p-1"
+          >
             <X size={20} />
           </button>
-          <h2 className="text-base font-semibold text-gray-900">Edit profile</h2>
+          <h2 className="text-base font-semibold text-gray-900">
+            Edit profile
+          </h2>
           <button
             form="edit-profile-form"
             type="submit"
@@ -100,7 +110,11 @@ export function EditProfileModal({ user, isOpen, onClose, onUpdate }: EditProfil
             <div className="relative">
               <div className="h-20 w-20 rounded-full overflow-hidden ring-2 ring-gray-200 bg-gray-100">
                 {previewUrl ? (
-                  <img src={previewUrl} alt="avatar" className="h-full w-full object-cover" />
+                  <img
+                    src={previewUrl}
+                    alt="avatar"
+                    className="h-full w-full object-cover"
+                  />
                 ) : (
                   <div className="h-full w-full flex items-center justify-center text-gray-400 text-2xl font-bold uppercase">
                     {user.username?.[0] || "?"}
@@ -121,7 +135,9 @@ export function EditProfileModal({ user, isOpen, onClose, onUpdate }: EditProfil
                 type="button"
                 onClick={() => setAvatarMode("file")}
                 className={`flex items-center gap-1.5 px-4 py-2 transition-all ${
-                  avatarMode === "file" ? "bg-indigo-600 text-white" : "bg-white text-gray-600 hover:bg-gray-50"
+                  avatarMode === "file"
+                    ? "bg-indigo-600 text-white"
+                    : "bg-white text-gray-600 hover:bg-gray-50"
                 }`}
               >
                 <Upload size={13} /> Upload file
@@ -130,7 +146,9 @@ export function EditProfileModal({ user, isOpen, onClose, onUpdate }: EditProfil
                 type="button"
                 onClick={() => setAvatarMode("url")}
                 className={`flex items-center gap-1.5 px-4 py-2 transition-all ${
-                  avatarMode === "url" ? "bg-indigo-600 text-white" : "bg-white text-gray-600 hover:bg-gray-50"
+                  avatarMode === "url"
+                    ? "bg-indigo-600 text-white"
+                    : "bg-white text-gray-600 hover:bg-gray-50"
                 }`}
               >
                 <LinkIcon size={13} /> Paste URL
@@ -161,7 +179,10 @@ export function EditProfileModal({ user, isOpen, onClose, onUpdate }: EditProfil
                 type="url"
                 value={formData.avatarUrl}
                 onChange={(e) => {
-                  setFormData(prev => ({ ...prev, avatarUrl: e.target.value }));
+                  setFormData((prev) => ({
+                    ...prev,
+                    avatarUrl: e.target.value,
+                  }));
                   setPreviewUrl(e.target.value);
                 }}
                 className={`${inputClass} w-full`}
@@ -174,54 +195,76 @@ export function EditProfileModal({ user, isOpen, onClose, onUpdate }: EditProfil
           <div className="px-5 py-5 space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">First Name</label>
+                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  First Name
+                </label>
                 <input
                   type="text"
                   value={formData.firstName}
-                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, firstName: e.target.value })
+                  }
                   className={inputClass}
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Last Name</label>
+                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Last Name
+                </label>
                 <input
                   type="text"
                   value={formData.lastName}
-                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, lastName: e.target.value })
+                  }
                   className={inputClass}
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Bio</label>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Bio
+              </label>
               <textarea
                 value={formData.bio}
-                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, bio: e.target.value })
+                }
                 className={`${inputClass} min-h-[88px] resize-none`}
                 placeholder="Tell people about yourself…"
                 maxLength={160}
               />
-              <p className="text-right text-xs text-gray-400">{formData.bio.length}/160</p>
+              <p className="text-right text-xs text-gray-400">
+                {formData.bio.length}/160
+              </p>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Location</label>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Location
+              </label>
               <input
                 type="text"
                 value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, location: e.target.value })
+                }
                 className={inputClass}
                 placeholder="City, Country"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Website</label>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Website
+              </label>
               <input
                 type="text"
                 value={formData.website}
-                onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, website: e.target.value })
+                }
                 className={inputClass}
                 placeholder="yourwebsite.com"
               />

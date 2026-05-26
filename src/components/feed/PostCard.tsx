@@ -29,7 +29,12 @@ interface CommentItemProps {
   currentUser: any;
 }
 
-function CommentItem({ comment, onReply, onDelete, currentUser }: CommentItemProps) {
+function CommentItem({
+  comment,
+  onReply,
+  onDelete,
+  currentUser,
+}: CommentItemProps) {
   const [isLiked, setIsLiked] = useState(
     comment.likes?.some((u) => u.id === currentUser?.id) || false,
   );
@@ -220,18 +225,21 @@ export function PostCard({ post, onPostDeleted }: PostCardProps) {
     if (!commentToDelete) return;
     try {
       await api.delete(`/comments/${commentToDelete}`);
-      
-      const removeCommentFromList = (list: Comment[], id: string): Comment[] => {
+
+      const removeCommentFromList = (
+        list: Comment[],
+        id: string,
+      ): Comment[] => {
         return list
-          .filter(c => c.id !== id)
-          .map(c => ({
+          .filter((c) => c.id !== id)
+          .map((c) => ({
             ...c,
-            replies: c.replies ? removeCommentFromList(c.replies, id) : []
+            replies: c.replies ? removeCommentFromList(c.replies, id) : [],
           }));
       };
 
-      setComments(prev => removeCommentFromList(prev, commentToDelete));
-      setCommentsCount(prev => prev - 1);
+      setComments((prev) => removeCommentFromList(prev, commentToDelete));
+      setCommentsCount((prev) => prev - 1);
       setToastMessage("Comment deleted");
       setShowToast(true);
     } catch (error) {
@@ -376,15 +384,15 @@ export function PostCard({ post, onPostDeleted }: PostCardProps) {
               ) : comments.length > 0 ? (
                 comments.map((comment) => (
                   <CommentItem
-                  key={comment.id}
-                  comment={comment}
-                  onReply={handleReply}
-                  onDelete={(id) => {
-                    setCommentToDelete(id);
-                    setShowCommentDeleteModal(true);
-                  }}
-                  currentUser={currentUser}
-                />
+                    key={comment.id}
+                    comment={comment}
+                    onReply={handleReply}
+                    onDelete={(id) => {
+                      setCommentToDelete(id);
+                      setShowCommentDeleteModal(true);
+                    }}
+                    currentUser={currentUser}
+                  />
                 ))
               ) : (
                 <p className="text-center text-sm text-gray-500">

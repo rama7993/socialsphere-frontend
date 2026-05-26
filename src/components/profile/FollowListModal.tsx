@@ -16,22 +16,27 @@ interface UserListModalProps {
   onCountChange?: (type: "followers" | "following", delta: number) => void;
 }
 
-function UserCard({ 
-  user, 
-  onAction, 
-  type, 
-  isOwnProfile, 
+function UserCard({
+  user,
+  onAction,
+  type,
+  isOwnProfile,
   onRemove,
-  onCountChange
-}: { 
-  user: User; 
+  onCountChange,
+}: {
+  user: User;
   onAction?: () => void;
   type: "followers" | "following";
   isOwnProfile?: boolean;
   onRemove?: (userId: string) => void;
   onCountChange?: (type: "followers" | "following", delta: number) => void;
 }) {
-  const { isFollowing, toggleFollow, isLoading, isOwnProfile: isMe } = useFollow(user, (following) => {
+  const {
+    isFollowing,
+    toggleFollow,
+    isLoading,
+    isOwnProfile: isMe,
+  } = useFollow(user, (following) => {
     onCountChange?.("following", following ? 1 : -1);
   });
   const [isRemoving, setIsRemoving] = useState(false);
@@ -53,14 +58,18 @@ function UserCard({
 
   return (
     <div className="flex items-center justify-between p-3.5 hover:bg-gray-50/50 rounded-2xl transition-all duration-300 group cursor-pointer">
-      <Link 
-        to={`/profile/${user.id}`} 
+      <Link
+        to={`/profile/${user.id}`}
         onClick={onAction}
         className="flex items-center gap-3.5 flex-1 min-w-0 cursor-pointer"
       >
         <div className="h-[44px] w-[44px] rounded-full border border-gray-100 p-0.5 bg-white shadow-sm ring-2 ring-transparent group-hover:ring-indigo-50 transition-all overflow-hidden flex-shrink-0">
           {user.avatarUrl ? (
-            <img src={user.avatarUrl} alt="" className="h-full w-full object-cover rounded-full" />
+            <img
+              src={user.avatarUrl}
+              alt=""
+              className="h-full w-full object-cover rounded-full"
+            />
           ) : (
             <div className="h-full w-full flex items-center justify-center bg-gray-50 text-gray-300 uppercase font-black text-[10px] rounded-full">
               {user.username?.[0]}
@@ -73,7 +82,9 @@ function UserCard({
               {user.username}
             </span>
             {type === "followers" && !isMe && (
-              <span className="text-indigo-600 font-black text-[11px] mt-0.5 pointer-events-none">• Follow</span>
+              <span className="text-indigo-600 font-black text-[11px] mt-0.5 pointer-events-none">
+                • Follow
+              </span>
             )}
           </div>
           <div className="text-[13px] text-gray-400 font-bold truncate">
@@ -105,7 +116,7 @@ function UserCard({
               "px-5 py-2 rounded-xl text-[12px] font-black transition-all duration-300 active:scale-95 focus:outline-none",
               isFollowing
                 ? "bg-gray-100/80 text-gray-900 hover:bg-gray-200"
-                : "bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-100"
+                : "bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-100",
             )}
           >
             {isLoading ? "..." : isFollowing ? "Following" : "Follow"}
@@ -116,7 +127,15 @@ function UserCard({
   );
 }
 
-export function FollowListModal({ userId, type, isOpen, onClose, title, isOwnProfile, onCountChange }: UserListModalProps) {
+export function FollowListModal({
+  userId,
+  type,
+  isOpen,
+  onClose,
+  title,
+  isOwnProfile,
+  onCountChange,
+}: UserListModalProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -145,25 +164,30 @@ export function FollowListModal({ userId, type, isOpen, onClose, title, isOwnPro
     setUsers((prev) => prev.filter((u) => u.id !== removedId));
   };
 
-  const filteredUsers = users.filter((u) =>
-    u.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    `${u.firstName} ${u.lastName}`.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredUsers = users.filter(
+    (u) =>
+      u.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      `${u.firstName} ${u.lastName}`
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()),
   );
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div 
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300" 
-        onClick={onClose} 
+      <div
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300"
+        onClick={onClose}
       />
-      
+
       <div className="bg-white rounded-[28px] w-full max-w-[400px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] transform transition-all animate-in zoom-in-95 slide-in-from-bottom-8 duration-500 relative flex flex-col max-h-[70vh]">
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-50 flex justify-between items-center bg-white sticky top-0 z-10">
           <div className="w-10" /> {/* Spacer */}
-          <h2 className="text-[16px] font-black text-gray-900 tracking-tight">{title}</h2>
-          <button 
-            onClick={onClose} 
+          <h2 className="text-[16px] font-black text-gray-900 tracking-tight">
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
             className="text-gray-400 hover:text-gray-900 p-2 transition-all focus:outline-none"
           >
             <X size={22} strokeWidth={2.5} />
@@ -173,7 +197,11 @@ export function FollowListModal({ userId, type, isOpen, onClose, title, isOwnPro
         {/* Search */}
         <div className="px-5 py-3 border-b border-gray-50 bg-gray-50/10">
           <div className="relative group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-gray-400 transition-colors" size={16} strokeWidth={2.5} />
+            <Search
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-gray-400 transition-colors"
+              size={16}
+              strokeWidth={2.5}
+            />
             <input
               type="text"
               placeholder="Search"
@@ -183,7 +211,7 @@ export function FollowListModal({ userId, type, isOpen, onClose, title, isOwnPro
             />
           </div>
         </div>
-        
+
         {/* List Content */}
         <div className="flex-1 overflow-y-auto p-2 custom-scrollbar space-y-0.5">
           {loading ? (
@@ -192,12 +220,12 @@ export function FollowListModal({ userId, type, isOpen, onClose, title, isOwnPro
             </div>
           ) : filteredUsers.length > 0 ? (
             filteredUsers.map((user) => (
-              <UserCard 
-                key={user.id} 
-                user={user} 
+              <UserCard
+                key={user.id}
+                user={user}
                 type={type}
                 isOwnProfile={isOwnProfile}
-                onAction={onClose} 
+                onAction={onClose}
                 onRemove={handleRemoveUser}
                 onCountChange={onCountChange}
               />
@@ -207,12 +235,13 @@ export function FollowListModal({ userId, type, isOpen, onClose, title, isOwnPro
               <div className="h-20 w-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
                 <UserIcon size={32} className="text-gray-200" />
               </div>
-              <h3 className="text-gray-900 font-black text-lg mb-2">No {type}</h3>
+              <h3 className="text-gray-900 font-black text-lg mb-2">
+                No {type}
+              </h3>
               <p className="text-gray-400 text-sm font-bold leading-relaxed">
-                {searchQuery 
+                {searchQuery
                   ? `No results for "${searchQuery}"`
-                  : `This user doesn't have any ${type} yet.`
-                }
+                  : `This user doesn't have any ${type} yet.`}
               </p>
             </div>
           )}

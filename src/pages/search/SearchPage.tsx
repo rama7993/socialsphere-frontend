@@ -7,7 +7,8 @@ import { useFollow } from "../../hooks/useFollow";
 import { cn } from "../../utils/cn";
 
 function SearchResultCard({ user }: { user: User }) {
-  const { isFollowing, toggleFollow, isLoading, isOwnProfile } = useFollow(user);
+  const { isFollowing, toggleFollow, isLoading, isOwnProfile } =
+    useFollow(user);
 
   if (isOwnProfile) return null;
 
@@ -32,7 +33,9 @@ function SearchResultCard({ user }: { user: User }) {
           <div className="font-bold text-gray-900 tracking-tight">
             {user.firstName} {user.lastName}
           </div>
-          <div className="text-[13px] text-gray-500 italic">@{user.username}</div>
+          <div className="text-[13px] text-gray-500 italic">
+            @{user.username}
+          </div>
         </div>
       </Link>
 
@@ -43,7 +46,7 @@ function SearchResultCard({ user }: { user: User }) {
           "px-5 py-2 rounded-xl font-bold text-[13px] flex items-center space-x-2 transition-all duration-300 active:scale-95 focus:outline-none shadow-sm",
           isFollowing
             ? "bg-gray-50 text-gray-400 cursor-default"
-            : "bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-100"
+            : "bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-100",
         )}
       >
         {isLoading ? (
@@ -133,8 +136,12 @@ export function SearchPage() {
   return (
     <div className="max-w-xl mx-auto p-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Discovery</h1>
-        <p className="text-gray-500 text-[15px]">Find and connect with people across the sphere.</p>
+        <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">
+          Discovery
+        </h1>
+        <p className="text-gray-500 text-[15px]">
+          Find and connect with people across the sphere.
+        </p>
       </div>
 
       <form onSubmit={handleSearch} className="relative mb-10 group">
@@ -154,19 +161,24 @@ export function SearchPage() {
       <div className="space-y-4">
         {loading ? (
           <div className="text-center py-10">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+            <div
+              className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+              role="status"
+            >
+              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                Loading...
+              </span>
             </div>
           </div>
         ) : results.length > 0 ? (
-          results.map((user) => (
-            <SearchResultCard key={user.id} user={user} />
-          ))
+          results.map((user) => <SearchResultCard key={user.id} user={user} />)
         ) : query && !loading ? (
           <div className="text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
             <div className="text-4xl mb-4">🔍</div>
             <h3 className="text-lg font-bold text-gray-900">No users found</h3>
-            <p className="text-gray-500">Try searching for a different name or username.</p>
+            <p className="text-gray-500">
+              Try searching for a different name or username.
+            </p>
           </div>
         ) : null}
       </div>

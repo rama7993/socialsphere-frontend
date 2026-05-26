@@ -8,7 +8,12 @@ interface ToastProps {
   duration?: number;
 }
 
-export function Toast({ message, isVisible, onClose, duration = 3000 }: ToastProps) {
+export function Toast({
+  message,
+  isVisible,
+  onClose,
+  duration = 3000,
+}: ToastProps) {
   const [shouldRender, setShouldRender] = useState(isVisible);
 
   useEffect(() => {
@@ -26,7 +31,9 @@ export function Toast({ message, isVisible, onClose, duration = 3000 }: ToastPro
   return (
     <div
       className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] transition-all duration-300 transform ${
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0 pointer-events-none"
+        isVisible
+          ? "translate-y-0 opacity-100"
+          : "translate-y-4 opacity-0 pointer-events-none"
       }`}
       onTransitionEnd={() => {
         if (!isVisible) setShouldRender(false);

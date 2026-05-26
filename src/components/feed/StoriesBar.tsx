@@ -40,17 +40,23 @@ export function StoriesBar() {
       .reduce((acc, story) => {
         const userId = story.user.id;
         if (!acc.has(userId)) {
-          acc.set(userId, { user: story.user, stories: [], isOwn: userId === currentUser?.id });
+          acc.set(userId, {
+            user: story.user,
+            stories: [],
+            isOwn: userId === currentUser?.id,
+          });
         }
         acc.get(userId)!.stories.push(story);
         return acc;
       }, new Map<string, { user: any; stories: Story[]; isOwn: boolean }>());
 
-    const list = Array.from(grouped.values()).map(group => {
-      const isAllSeen = group.stories.every(s =>
-        s.seenBy?.some(u => u.id === currentUser?.id)
+    const list = Array.from(grouped.values()).map((group) => {
+      const isAllSeen = group.stories.every((s) =>
+        s.seenBy?.some((u) => u.id === currentUser?.id),
       );
-      const newestTimestamp = Math.max(...group.stories.map(s => new Date(s.createdAt).getTime()));
+      const newestTimestamp = Math.max(
+        ...group.stories.map((s) => new Date(s.createdAt).getTime()),
+      );
       return { ...group, isAllSeen, newestTimestamp };
     });
 
@@ -67,7 +73,10 @@ export function StoriesBar() {
     return (
       <div className="flex space-x-4 overflow-x-auto pb-4 mb-4 mt-2 no-scrollbar">
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="flex flex-col items-center space-y-2 flex-shrink-0">
+          <div
+            key={i}
+            className="flex flex-col items-center space-y-2 flex-shrink-0"
+          >
             <div className="w-16 h-16 rounded-full shimmer" />
             <div className="w-10 h-2 rounded-md shimmer" />
           </div>
@@ -95,14 +104,18 @@ export function StoriesBar() {
           onClick={() => setViewerState({ isOpen: true, index })}
           className="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer group"
         >
-          <div className={`w-16 h-16 rounded-full p-[2px] ${
-            group.isAllSeen 
-              ? "bg-gray-300" 
-              : "bg-gradient-to-tr from-yellow-400 to-fuchsia-600"
-          }`}>
-            <div className={`w-full h-full rounded-full border-2 border-white overflow-hidden ${
-              group.isAllSeen ? "bg-gray-100" : "bg-gray-200"
-            }`}>
+          <div
+            className={`w-16 h-16 rounded-full p-[2px] ${
+              group.isAllSeen
+                ? "bg-gray-300"
+                : "bg-gradient-to-tr from-yellow-400 to-fuchsia-600"
+            }`}
+          >
+            <div
+              className={`w-full h-full rounded-full border-2 border-white overflow-hidden ${
+                group.isAllSeen ? "bg-gray-100" : "bg-gray-200"
+              }`}
+            >
               <img
                 src={
                   group.user.avatarUrl ||
@@ -113,9 +126,11 @@ export function StoriesBar() {
               />
             </div>
           </div>
-          <span className={`text-[10px] font-medium max-w-[64px] truncate ${
-            group.isAllSeen ? "text-gray-400" : "text-gray-700"
-          }`}>
+          <span
+            className={`text-[10px] font-medium max-w-[64px] truncate ${
+              group.isAllSeen ? "text-gray-400" : "text-gray-700"
+            }`}
+          >
             {group.isOwn ? "You" : group.user.username}
           </span>
         </div>

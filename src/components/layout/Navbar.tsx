@@ -40,7 +40,7 @@ export function Navbar() {
             "p-3 rounded-xl transition-all duration-200",
             isActive("/")
               ? "bg-indigo-50 text-indigo-600"
-              : "text-gray-400 hover:bg-gray-50 hover:text-gray-900"
+              : "text-gray-400 hover:bg-gray-50 hover:text-gray-900",
           )}
         >
           <Home size={22} />
@@ -52,7 +52,7 @@ export function Navbar() {
             "p-3 rounded-xl transition-all duration-200 relative",
             isActive("/notifications")
               ? "bg-indigo-50 text-indigo-600"
-              : "text-gray-400 hover:bg-gray-50 hover:text-gray-900"
+              : "text-gray-400 hover:bg-gray-50 hover:text-gray-900",
           )}
         >
           <Bell size={22} />
@@ -63,13 +63,13 @@ export function Navbar() {
           )}
         </Link>
 
-        <Link 
+        <Link
           to="/create"
           className={cn(
             "p-3 rounded-xl transition-all duration-200",
             isActive("/create")
               ? "bg-indigo-50 text-indigo-600"
-              : "text-gray-400 hover:bg-gray-50 hover:text-gray-900"
+              : "text-gray-400 hover:bg-gray-50 hover:text-gray-900",
           )}
         >
           <PlusSquare size={22} />
@@ -81,7 +81,7 @@ export function Navbar() {
             "p-3 rounded-xl transition-all duration-200",
             isActive("/profile")
               ? "bg-indigo-50 text-indigo-600"
-              : "text-gray-400 hover:bg-gray-50 hover:text-gray-900"
+              : "text-gray-400 hover:bg-gray-50 hover:text-gray-900",
           )}
         >
           <User size={22} />

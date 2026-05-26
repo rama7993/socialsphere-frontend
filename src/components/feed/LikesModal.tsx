@@ -18,19 +18,30 @@ interface LikesModalProps {
   onClose: () => void;
 }
 
-function LikerRow({ liker, currentUserId }: { liker: Liker; currentUserId?: string }) {
+function LikerRow({
+  liker,
+  currentUserId,
+}: {
+  liker: Liker;
+  currentUserId?: string;
+}) {
   const { isFollowing, toggleFollow, isLoading } = useFollow(liker as any);
   const isOwn = liker.id === currentUserId;
-  const displayName = liker.firstName || liker.lastName
-    ? `${liker.firstName || ""} ${liker.lastName || ""}`.trim()
-    : liker.username;
+  const displayName =
+    liker.firstName || liker.lastName
+      ? `${liker.firstName || ""} ${liker.lastName || ""}`.trim()
+      : liker.username;
 
   return (
     <div className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors">
       <div className="flex items-center gap-3">
         <div className="w-11 h-11 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
           {liker.avatarUrl ? (
-            <img src={liker.avatarUrl} alt={liker.username} className="w-full h-full object-cover" />
+            <img
+              src={liker.avatarUrl}
+              alt={liker.username}
+              className="w-full h-full object-cover"
+            />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-gray-500 font-semibold text-sm uppercase">
               {liker.username?.[0] || "?"}
@@ -38,7 +49,9 @@ function LikerRow({ liker, currentUserId }: { liker: Liker; currentUserId?: stri
           )}
         </div>
         <div>
-          <p className="text-sm font-semibold text-gray-900">{liker.username}</p>
+          <p className="text-sm font-semibold text-gray-900">
+            {liker.username}
+          </p>
           {displayName !== liker.username && (
             <p className="text-xs text-gray-500">{displayName}</p>
           )}
@@ -56,7 +69,11 @@ function LikerRow({ liker, currentUserId }: { liker: Liker; currentUserId?: stri
         >
           {isLoading ? (
             <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          ) : isFollowing ? "Following" : "Follow"}
+          ) : isFollowing ? (
+            "Following"
+          ) : (
+            "Follow"
+          )}
         </button>
       )}
     </div>
@@ -71,7 +88,8 @@ export function LikesModal({ postId, isOpen, onClose }: LikesModalProps) {
   useEffect(() => {
     if (!isOpen) return;
     setLoading(true);
-    api.get(`/likes/post/${postId}/users`)
+    api
+      .get(`/likes/post/${postId}/users`)
       .then((res) => setLikers(res.data))
       .finally(() => setLoading(false));
   }, [isOpen, postId]);
@@ -90,7 +108,10 @@ export function LikesModal({ postId, isOpen, onClose }: LikesModalProps) {
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
           <div className="w-6" />
           <h2 className="text-base font-semibold text-gray-900">Likes</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-700 transition-colors">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-700 transition-colors"
+          >
             <X size={20} />
           </button>
         </div>
@@ -110,10 +131,16 @@ export function LikesModal({ postId, isOpen, onClose }: LikesModalProps) {
               ))}
             </div>
           ) : likers.length === 0 ? (
-            <p className="text-center text-sm text-gray-400 py-12">No likes yet</p>
+            <p className="text-center text-sm text-gray-400 py-12">
+              No likes yet
+            </p>
           ) : (
             likers.map((liker) => (
-              <LikerRow key={liker.id} liker={liker} currentUserId={currentUser?.id} />
+              <LikerRow
+                key={liker.id}
+                liker={liker}
+                currentUserId={currentUser?.id}
+              />
             ))
           )}
         </div>

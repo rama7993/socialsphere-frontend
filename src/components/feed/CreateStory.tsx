@@ -100,7 +100,10 @@ export function CreateStory({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6 overflow-y-auto flex-1 custom-scrollbar">
+        <form
+          onSubmit={handleSubmit}
+          className="p-6 space-y-6 overflow-y-auto flex-1 custom-scrollbar"
+        >
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <label className="text-sm font-semibold text-gray-700">
@@ -172,7 +175,7 @@ export function CreateStory({
                 )}
               </>
             ) : (
-              <div 
+              <div
                 className="flex flex-col items-center space-y-2 text-gray-400 text-center px-6 cursor-pointer hover:text-gray-500 transition-colors"
                 onClick={() => fileInputRef.current?.click()}
               >
@@ -181,7 +184,9 @@ export function CreateStory({
                 </div>
                 <div>
                   <p className="font-semibold">Drop image or click</p>
-                  <p className="text-xs text-gray-400">Your story will appear here</p>
+                  <p className="text-xs text-gray-400">
+                    Your story will appear here
+                  </p>
                 </div>
               </div>
             )}

@@ -7,18 +7,25 @@ export function useIsOwnProfile(user: User | null) {
 
   return useMemo(() => {
     if (!currentUser || !user) return false;
-    
+
     // Check by ID (UUID/Numeric)
-    if (currentUser.id && user.id && String(currentUser.id) === String(user.id)) {
+    if (
+      currentUser.id &&
+      user.id &&
+      String(currentUser.id) === String(user.id)
+    ) {
       return true;
     }
-    
+
     // Check by username (Case-insensitive)
-    if (currentUser.username && user.username && 
-        currentUser.username.toLowerCase() === user.username.toLowerCase()) {
+    if (
+      currentUser.username &&
+      user.username &&
+      currentUser.username.toLowerCase() === user.username.toLowerCase()
+    ) {
       return true;
     }
-    
+
     return false;
   }, [currentUser, user]);
 }
