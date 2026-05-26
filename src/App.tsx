@@ -4,7 +4,7 @@ import {
   type RouteObject,
 } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
-import { HomePage } from "./pages/home/HomePage";
+import { HomePage, homePageLoader } from "./pages/home/HomePage";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { RegisterPage } from "./pages/auth/RegisterPage";
 import { ProfilePage } from "./pages/profile/ProfilePage";
@@ -45,6 +45,7 @@ const routes: RouteObject[] = [
           {
             path: "/",
             element: <HomePage />,
+            loader: homePageLoader,
           },
           {
             path: "/profile",

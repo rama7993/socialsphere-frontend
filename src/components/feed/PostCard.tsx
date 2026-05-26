@@ -11,6 +11,8 @@ import {
 import type { Post, Comment } from "../../types";
 import { cn } from "../../utils/cn";
 import { useState, useEffect, useRef } from "react";
+import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import api from "../../lib/axios";
 import { useAuthStore } from "../../store/authStore";
 import { LikesModal } from "./LikesModal";
@@ -128,6 +130,65 @@ function CommentItem({
       </div>
     </div>
   );
+}
+
+function formatPostContent(content: string) {
+  if (!content) return "";
+
+  const parts: ReactNode[] = [];
+  const regex = /`([^`]+)`|#(\w+)|@(\w+)/g;
+  
+  let lastIndex = 0;
+  let match;
+  
+  while ((match = regex.exec(content)) !== null) {
+    const matchIndex = match.index;
+    
+    if (matchIndex > lastIndex) {
+      parts.push(content.substring(lastIndex, matchIndex));
+    }
+    
+    const [fullMatch, codeText, hashtagText, mentionText] = match;
+    
+    if (codeText !== undefined) {
+      parts.push(
+        <code
+          key={matchIndex}
+          className="bg-indigo-50/50 text-indigo-600 px-1.5 py-0.5 rounded font-mono text-[13px] border border-indigo-100/50 font-semibold"
+        >
+          {codeText}
+        </code>
+      );
+    } else if (hashtagText !== undefined) {
+      parts.push(
+        <Link
+          key={matchIndex}
+          to={`/search?q=${hashtagText}`}
+          className="text-indigo-600 hover:text-indigo-800 hover:underline font-semibold"
+        >
+          {fullMatch}
+        </Link>
+      );
+    } else if (mentionText !== undefined) {
+      parts.push(
+        <Link
+          key={matchIndex}
+          to={`/search?q=${mentionText}`}
+          className="text-indigo-600 hover:text-indigo-800 hover:underline font-semibold"
+        >
+          {fullMatch}
+        </Link>
+      );
+    }
+    
+    lastIndex = regex.lastIndex;
+  }
+  
+  if (lastIndex < content.length) {
+    parts.push(content.substring(lastIndex));
+  }
+  
+  return parts;
 }
 
 export function PostCard({ post, onPostDeleted }: PostCardProps) {
@@ -316,11 +377,13 @@ export function PostCard({ post, onPostDeleted }: PostCardProps) {
         </div>
 
         <div className="px-4 pb-4">
-          <h3 className="font-bold text-gray-900 text-lg mb-1 tracking-tight">
-            {post.title}
-          </h3>
-          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
-            {post.content}
+          {post.title && post.title !== "New Post" && (
+            <h3 className="font-bold text-gray-900 text-lg mb-1 tracking-tight">
+              {post.title}
+            </h3>
+          )}
+          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-[15px]">
+            {formatPostContent(post.content)}
           </p>
         </div>
 

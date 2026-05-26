@@ -1,17 +1,37 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLoaderData } from "react-router-dom";
 import type { Post } from "../../types";
 import { StoriesBar } from "../../components/feed/StoriesBar";
 import { PostCard } from "../../components/feed/PostCard";
 import api from "../../lib/axios";
 
+export async function homePageLoader() {
+  const token = localStorage.getItem("token");
+  if (!token) return { posts: [], followingCount: 0 };
+
+  try {
+    const response = await api.get("/posts/feed", {
+      params: { page: 1, limit: 10 },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Failed to load feed via loader", error);
+    return { posts: [], followingCount: 0 };
+  }
+}
+
 export function HomePage() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [followingCount, setFollowingCount] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
+  const initialData = useLoaderData() as any;
+  const initialPosts = Array.isArray(initialData) ? initialData : initialData?.posts || [];
+  const initialFollowingCount = initialData?.followingCount ?? 0;
+
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [followingCount, setFollowingCount] = useState<number | null>(
+    initialFollowingCount,
+  );
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [activeTab] = useState<"foryou" | "following">("following");
+  const [hasMore, setHasMore] = useState(initialPosts.length === 10);
 
   const fetchPosts = async (pageNum = 1) => {
     if (pageNum === 1) setLoading(true);
@@ -40,11 +60,6 @@ export function HomePage() {
       if (pageNum === 1) setLoading(false);
     }
   };
-
-  useEffect(() => {
-    setPage(1);
-    fetchPosts(1);
-  }, [activeTab]);
 
   const loadMore = () => {
     const nextPage = page + 1;

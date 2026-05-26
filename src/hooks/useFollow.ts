@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import api from "../lib/axios";
 import { useAuthStore } from "../store/authStore";
 import type { User } from "../types";
@@ -10,7 +10,7 @@ export function useFollow(
 ) {
   const { user: currentUser } = useAuthStore();
   const [isFollowing, setIsFollowing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const isOwnProfile = useIsOwnProfile(targetUser);
 
   // Sync initial following status
@@ -33,29 +33,28 @@ export function useFollow(
     checkFollowing();
   }, [targetUser, currentUser, isOwnProfile]);
 
-  const toggleFollow = async () => {
-    if (!targetUser || isOwnProfile || isLoading) return;
+  const toggleFollow = () => {
+    if (!targetUser || isOwnProfile || isPending) return;
 
-    setIsLoading(true);
-    // Optimistic Update
-    const previousState = isFollowing;
-    setIsFollowing(!previousState);
+    startTransition(async () => {
+      // Optimistic Update
+      const previousState = isFollowing;
+      setIsFollowing(!previousState);
 
-    try {
-      if (previousState) {
-        await api.delete(`/users/${targetUser.id}/follow`);
-      } else {
-        await api.post(`/users/${targetUser.id}/follow`);
+      try {
+        if (previousState) {
+          await api.delete(`/users/${targetUser.id}/follow`);
+        } else {
+          await api.post(`/users/${targetUser.id}/follow`);
+        }
+        onToggle?.(!previousState);
+      } catch (error) {
+        console.error("Failed to toggle follow", error);
+        // Revert on error
+        setIsFollowing(previousState);
       }
-      onToggle?.(!previousState);
-    } catch (error) {
-      console.error("Failed to toggle follow", error);
-      // Revert on error
-      setIsFollowing(previousState);
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
-  return { isFollowing, toggleFollow, isLoading, isOwnProfile };
+  return { isFollowing, toggleFollow, isLoading: isPending, isOwnProfile };
 }
