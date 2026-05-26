@@ -32,9 +32,12 @@ export function LoginPage() {
       login(user, access_token);
       navigate("/");
     } catch (err: any) {
-      if (err.response) {
-      }
-      setError(err.response?.data?.message || "Invalid email or password");
+      const msg = err.response?.data?.message;
+      setError(
+        msg === "Unauthorized"
+          ? "Invalid email or password"
+          : (msg || "Invalid email or password")
+      );
     }
   };
 

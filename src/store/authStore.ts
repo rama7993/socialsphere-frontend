@@ -32,6 +32,9 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     try {
       const response = await api.get("/users/profile");
+      if (!response.data) {
+        throw new Error("User not found");
+      }
       set({ user: response.data, isAuthenticated: true });
     } catch (error) {
       localStorage.removeItem("token");
